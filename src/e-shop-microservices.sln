@@ -3,6 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{2306E4B5-30E6-4A8A-AC8E-35D1909A5C5F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catalog", "Catalog", "{F01733EC-BEAA-43D9-AC1C-89458D1B47AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.Api", "Catalog.Api\Catalog.Api.csproj", "{FBC2AC89-A56D-4A92-90C0-507EBC94E836}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{9FB55684-59D6-4AB3-9753-A58B9250F6F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks", "BuildingBlocks\BuildingBlocks.csproj", "{C6BB4D4A-E8A1-463F-B088-D84B86E6AD60}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -10,5 +20,20 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F01733EC-BEAA-43D9-AC1C-89458D1B47AF} = {2306E4B5-30E6-4A8A-AC8E-35D1909A5C5F}
+		{FBC2AC89-A56D-4A92-90C0-507EBC94E836} = {F01733EC-BEAA-43D9-AC1C-89458D1B47AF}
+		{C6BB4D4A-E8A1-463F-B088-D84B86E6AD60} = {9FB55684-59D6-4AB3-9753-A58B9250F6F9}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FBC2AC89-A56D-4A92-90C0-507EBC94E836}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBC2AC89-A56D-4A92-90C0-507EBC94E836}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBC2AC89-A56D-4A92-90C0-507EBC94E836}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBC2AC89-A56D-4A92-90C0-507EBC94E836}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6BB4D4A-E8A1-463F-B088-D84B86E6AD60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6BB4D4A-E8A1-463F-B088-D84B86E6AD60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6BB4D4A-E8A1-463F-B088-D84B86E6AD60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6BB4D4A-E8A1-463F-B088-D84B86E6AD60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

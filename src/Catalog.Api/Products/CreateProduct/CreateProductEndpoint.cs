@@ -1,5 +1,6 @@
 ﻿using Carter;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Catalog.Api.Products.CreateProduct;
 
@@ -11,7 +12,7 @@ public class CreateProductEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("/products", async (CreateProductRequest request, ISender sender) =>
+        app.MapPost("/products", async ([FromBody] CreateProductRequest request, ISender sender) =>
         {
             var command = ProductMapper.FromRequestToCommand(request);
 

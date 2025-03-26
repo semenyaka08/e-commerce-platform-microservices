@@ -1,4 +1,5 @@
 using Carter;
+using Catalog.Api.Middlewares;
 using Marten;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,8 +14,10 @@ builder.Services.AddMarten(configuration =>
 {
     configuration.Connection(builder.Configuration.GetConnectionString("DefaultConnection")!); 
 }).UseLightweightSessions();
-
+builder.Services.AddScoped<ExceptionHandlingMiddleware>();
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 //Configure the HTTP request pipeline
 app.MapCarter();

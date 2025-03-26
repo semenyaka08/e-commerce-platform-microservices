@@ -1,4 +1,5 @@
 ﻿using Catalog.Api.Products.CreateProduct;
+using Catalog.Api.Products.GetProductById;
 
 namespace Catalog.Api.Products;
 

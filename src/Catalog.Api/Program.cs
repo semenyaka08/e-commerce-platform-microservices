@@ -1,6 +1,7 @@
 using System.Reflection;
 using BuildingBlocks.Behaviors;
 using Carter;
+using Catalog.Api.Data;
 using Catalog.Api.Middlewares;
 using FluentValidation;
 using Marten;
@@ -26,6 +27,10 @@ builder.Services.AddMarten(configuration =>
 }).UseLightweightSessions();
 
 builder.Services.AddScoped<ExceptionHandlingMiddleware>();
+
+if (builder.Environment.IsDevelopment())
+    builder.Services.InitializeMartenWith<CatalogInitialData>();
+
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();

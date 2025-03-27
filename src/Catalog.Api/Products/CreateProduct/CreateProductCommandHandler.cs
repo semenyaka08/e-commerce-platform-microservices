@@ -1,5 +1,6 @@
 ﻿using BuildingBlocks.CQRS;
 using Catalog.Api.Models;
+using FluentValidation;
 using Marten;
 
 namespace Catalog.Api.Products.CreateProduct;
@@ -7,6 +8,20 @@ namespace Catalog.Api.Products.CreateProduct;
 public record CreateProductCommand(string Name, string Description, string ImageFile, decimal Price, string Category) : ICommand<CreateProductResult>;
 
 public record CreateProductResult(Guid Id);
+
+public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
+{
+    public CreateProductCommandValidator()
+    {
+        RuleFor(x => x.Name)
+            .NotEmpty().WithMessage("Name is required")
+            .Length(2, 150).WithMessage("Name must be between 2 and 150 characters");
+        RuleFor(x => x.Description).NotEmpty().WithMessage("Description is required");
+        RuleFor(x => x.Category).NotEmpty().WithMessage("Category is required");
+        RuleFor(x => x.ImageFile).NotEmpty().WithMessage("Image File is required");
+        RuleFor(x => x.Price).GreaterThan(0).WithMessage("Price must be greater than zero");
+    }
+}
 
 public class CreateProductCommandHandler(IDocumentSession session) : ICommandHandler<CreateProductCommand, CreateProductResult>
 {

@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Exceptions;
+using FluentValidation;
 
 namespace Catalog.Api.Middlewares;
 
@@ -13,9 +14,25 @@ public class ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddleware> lo
             catch (NotFoundException exception)
             {
                 context.Response.StatusCode = 404;
-
+                
                 await context.Response.WriteAsync(exception.Message);
                 logger.LogWarning(exception.Message);
+            }
+            catch (ValidationException exception)
+            {
+                context.Response.StatusCode = 400;
+
+                var errors = exception.Errors
+                    .Select(z => new { z.PropertyName, z.ErrorMessage })
+                    .ToList();
+
+                var response = new
+                {
+                    Message = "Validation failed",
+                    Errors = errors
+                };
+                
+                await context.Response.WriteAsJsonAsync(response);
             }
             catch (Exception ex)
             {

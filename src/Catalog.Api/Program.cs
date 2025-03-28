@@ -1,4 +1,3 @@
-using System.Reflection;
 using BuildingBlocks.Behaviors;
 using Carter;
 using Catalog.Api.Data;

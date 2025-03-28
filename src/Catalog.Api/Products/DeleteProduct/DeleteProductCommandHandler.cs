@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.CQRS;
+using Catalog.Api.Exceptions;
 using Catalog.Api.Models;
 using FluentValidation;
 using Marten;
@@ -22,8 +23,13 @@ public class DeleteProductCommandHandler(ILogger<DeleteProductCommandHandler> lo
     public async Task<DeleteProductResult> Handle(DeleteProductCommand command, CancellationToken cancellationToken)
     {
         logger.LogInformation("Deleting product with id {id}", command.Id);
+
+        var productToDelete = await session.LoadAsync<Product>(command.Id, cancellationToken);
+
+        if (productToDelete == null)
+            throw new ProductNotFoundException(nameof(Product), command.Id);
         
-        session.Delete<Product>(command.Id);
+        session.Delete(productToDelete);
         await session.SaveChangesAsync(cancellationToken);
 
         return new DeleteProductResult(true);

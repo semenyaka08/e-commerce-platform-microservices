@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Exceptions;
+using Catalog.Api.Exceptions;
 using FluentValidation;
 
 namespace Catalog.Api.Middlewares;
@@ -11,7 +12,7 @@ public class ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddleware> lo
             {
                 await next.Invoke(context);
             }
-            catch (NotFoundException exception)
+            catch (ProductNotFoundException exception)
             {
                 context.Response.StatusCode = 404;
                 

@@ -1,5 +1,5 @@
 ﻿using BuildingBlocks.CQRS;
-using BuildingBlocks.Exceptions;
+using Catalog.Api.Exceptions;
 using Catalog.Api.Models;
 using Marten;
 
@@ -18,7 +18,7 @@ public class GetProductByIdQueryHandler(ILogger<GetProductByIdQueryHandler> logg
         var result = await session.LoadAsync<Product>(query.Id, cancellationToken);
 
         if (result == null)
-            throw new NotFoundException($"Product with id {query.Id} was not found");
+            throw new ProductNotFoundException(nameof(Product), query.Id);
 
         return new GetProductByIdResult(result);
     }

@@ -1,5 +1,6 @@
 ﻿using BuildingBlocks.CQRS;
 using BuildingBlocks.Exceptions;
+using Catalog.Api.Exceptions;
 using Catalog.Api.Models;
 using FluentValidation;
 using Marten;
@@ -33,7 +34,7 @@ public class UpdateProductCommandHandler(ILogger<UpdateProductCommandHandler> lo
         var product = await session.LoadAsync<Product>(command.Id, cancellationToken);
 
         if (product == null)
-            throw new NotFoundException($"Product with id {command.Id} was not found");
+            throw new ProductNotFoundException(nameof(Product), command.Id);
 
         product.Name = command.Name;
         product.Description = command.Description;

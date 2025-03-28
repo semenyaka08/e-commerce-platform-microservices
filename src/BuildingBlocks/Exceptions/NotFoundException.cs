@@ -1,3 +1,3 @@
 ﻿namespace BuildingBlocks.Exceptions;
 
-public class NotFoundException(string message) : Exception(message);
+public abstract class NotFoundException(string name, object key) : Exception($"Entity: {name} with key: {key} was not found");

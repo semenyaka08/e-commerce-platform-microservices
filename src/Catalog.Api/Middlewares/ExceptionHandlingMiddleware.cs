@@ -1,5 +1,4 @@
-﻿using BuildingBlocks.Exceptions;
-using Catalog.Api.Exceptions;
+﻿using Catalog.Api.Exceptions;
 using FluentValidation;
 
 namespace Catalog.Api.Middlewares;

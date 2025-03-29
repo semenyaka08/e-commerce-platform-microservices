@@ -1,4 +1,5 @@
 using Basket.Api.Data;
+using Basket.Api.Middlewares;
 using Basket.Api.Models;
 using BuildingBlocks.Behaviors;
 using Carter;
@@ -23,10 +24,13 @@ builder.Services.AddMarten(opts =>
     opts.Schema.For<ShoppingCart>().Identity(x => x.UserName);
 }).UseLightweightSessions();
 
+builder.Services.AddScoped<ExceptionHandlingMiddleware>();
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 builder.Services.AddValidatorsFromAssembly(assembly);
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapCarter();
 

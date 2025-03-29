@@ -21,12 +21,21 @@ services:
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
-      POSTGRES_DB: basketDb
+      POSTGRES_DB: BasketDb
     ports:
       - "5433:5432"
     volumes:
       - postgres_basket:/var/lib/postgresql/data/
-  
+    
+  distributedCache:
+    image: redis
+    container_name: distributeCache
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    
   catalog.api:
     image: catalog.api
     build:
@@ -40,7 +49,24 @@ services:
       ConnectionStrings__DefaultConnection: Server = catalogDb;Port = 5432;Database = CatalogDb;User Id=postgres;Password=postgres;Include Error Detail=true
     depends_on:
       - catalogDb
+        
+  basket.api:
+    image: basket.api
+    build:
+      context: .
+      dockerfile: Basket.Api/Dockerfile
+    ports:
+      - "6001:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: 8080
+      ConnectionStrings__DefaultConnection: Server = basketDb;Port = 5432;Database = BasketDb;User Id=postgres;Password=postgres;Include Error Detail=true
+      ConnectionStrings__Redis: distributedCache:6379
+    depends_on:
+      - basketDb
+      - distributedCache
     
 volumes:
   postgres_catalog:
   postgres_basket:
+  redis_data:

@@ -1,6 +1,7 @@
 ﻿using Basket.Api.Data;
 using Basket.Api.Models;
 using BuildingBlocks.CQRS;
+using Discount.Grpc;
 using FluentValidation;
 
 namespace Basket.Api.Basket.StoreBasket;
@@ -18,14 +19,21 @@ public class StoreBasketCommandValidator : AbstractValidator<StoreBasketCommand>
     }
 }
 
-public class StoreBasketCommandHandler(ILogger<StoreBasketCommandHandler> logger, IBasketRepository basketRepository) : ICommandHandler<StoreBasketCommand, StoreBasketResult>
+public class StoreBasketCommandHandler(ILogger<StoreBasketCommandHandler> logger, IBasketRepository basketRepository, DiscountProtoService.DiscountProtoServiceClient discountService) : ICommandHandler<StoreBasketCommand, StoreBasketResult>
 {
     public async Task<StoreBasketResult> Handle(StoreBasketCommand query, CancellationToken cancellationToken)
     {
         logger.LogInformation("Storing basket with username {username}", query.Cart.UserName);
 
-        await basketRepository.StoreBasketAsync(query.Cart, cancellationToken);
+        foreach (var product in query.Cart.CartItems)
+        {
+            var coupon = await discountService.GetDiscountAsync(new GetDiscountRequest{ProductName = product.ProductName}, cancellationToken: cancellationToken);
 
+            product.Price -= coupon.Amount;
+        }
+        
+        await basketRepository.StoreBasketAsync(query.Cart, cancellationToken);
+        
         return new StoreBasketResult(query.Cart.UserName);
     }
 }

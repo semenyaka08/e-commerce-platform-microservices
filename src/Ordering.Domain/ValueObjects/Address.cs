@@ -24,4 +24,12 @@ public record Address
         State = state;
         ZipCode = zipCode;
     }
+    
+    public static Address Of(string firstName, string lastName, string emailAddress, string addressLine, string country, string state, string zipCode)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(emailAddress);
+        ArgumentException.ThrowIfNullOrWhiteSpace(addressLine);
+
+        return new Address(firstName, lastName, emailAddress, addressLine, country, state, zipCode);
+    }
 };

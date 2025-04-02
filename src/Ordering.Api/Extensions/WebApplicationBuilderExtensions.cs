@@ -6,4 +6,9 @@ public static class WebApplicationBuilderExtensions
     {
         
     }
+    
+    public static WebApplication UseApiServices(this WebApplication app)
+    {
+        return app;
+    }
 }

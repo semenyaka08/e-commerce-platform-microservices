@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Ordering.Infrastructure.Data;
+using Ordering.Infrastructure.Data.Interceptors;
 
 namespace Ordering.Infrastructure.Extensions;
 
@@ -11,8 +13,12 @@ public static class ServiceCollectionExtensions
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-        serviceCollection.AddDbContext<OrderingDbContext>(options =>
+        serviceCollection.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
+        serviceCollection.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
+        
+        serviceCollection.AddDbContext<OrderingDbContext>((sp, options) =>
         {
+            options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
             options.UseSqlServer(connectionString);
         });
         

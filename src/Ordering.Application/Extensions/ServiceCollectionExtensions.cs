@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using BuildingBlocks.Behaviors;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Ordering.Application.Extensions;
@@ -10,6 +11,7 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddMediatR(config =>
         {
             config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            config.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
         
         return serviceCollection;

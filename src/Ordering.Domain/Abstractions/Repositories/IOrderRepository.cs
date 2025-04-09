@@ -11,4 +11,10 @@ public interface IOrderRepository
     public Task SaveChangesAsync();
 
     public Task DeleteOrder(Order order);
+
+    public Task<List<Order>> GetOrdersByNameAsync(string name);
+    
+    public Task<List<Order>> GetOrdersByCustomerAsync(Guid customerId);
+    
+    public Task<List<Order>> GetOrdersAsync(int pageSize, int pageNumber);
 }

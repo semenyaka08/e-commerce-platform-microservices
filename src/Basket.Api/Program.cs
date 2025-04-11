@@ -2,6 +2,7 @@ using Basket.Api.Data;
 using Basket.Api.Middlewares;
 using Basket.Api.Models;
 using BuildingBlocks.Behaviors;
+using BuildingBlocks.RabbitMQ.MassTransit;
 using Carter;
 using Discount.Grpc;
 using FluentValidation;
@@ -20,6 +21,8 @@ builder.Services.AddMediatR(config =>
     config.RegisterServicesFromAssembly(typeof(Program).Assembly);
     config.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
+
+builder.Services.AddMessageBroker(builder.Configuration);
 
 builder.Services.AddMarten(opts =>
 {

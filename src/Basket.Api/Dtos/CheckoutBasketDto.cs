@@ -4,7 +4,6 @@ public class CheckoutBasketDto
 {
     public string UserName { get; set; } = default!;
     public Guid CustomerId { get; set; } = default!;
-    public decimal TotalPrice { get; set; } = default!;
     
     public string FirstName { get; set; } = default!;
     public string LastName { get; set; } = default!;

@@ -20,7 +20,7 @@ public class CheckoutBasketEndpoint : ICarterModule
 
             return Results.Ok(new CheckoutBasketResponse(result.IsSucceeded));
         })
-        .WithName("StoreBasket")
+        .WithName("CheckoutBasket")
         .Produces<CheckoutBasketResponse>(StatusCodes.Status201Created)
         .ProducesProblem(StatusCodes.Status400BadRequest)
         .WithSummary("Checkout Cart")

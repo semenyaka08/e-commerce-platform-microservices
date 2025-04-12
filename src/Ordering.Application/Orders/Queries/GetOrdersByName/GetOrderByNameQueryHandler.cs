@@ -5,7 +5,7 @@ using Ordering.Domain.Abstractions.Repositories;
 
 namespace Ordering.Application.Orders.Queries.GetOrdersByName;
 
-public class GetOrderByNameQueryHandler(ILogger logger, IOrderRepository orderRepository) : IQueryHandler<GetOrdersByNameQuery, GetOrdersByNameResult>
+public class GetOrderByNameQueryHandler(ILogger<GetOrderByNameQueryHandler> logger, IOrderRepository orderRepository) : IQueryHandler<GetOrdersByNameQuery, GetOrdersByNameResult>
 {
     public async Task<GetOrdersByNameResult> Handle(GetOrdersByNameQuery request, CancellationToken cancellationToken)
     {

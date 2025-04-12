@@ -36,6 +36,18 @@ services:
       - SA_PASSWORD=Serhiy0808
     ports:
       - "1433:1433"
+  
+  messageBroker:
+    image: rabbitmq:management
+    container_name: messageBroker
+    hostname: ecommerce-mq
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
     
   distributedCache:
     image: redis
@@ -73,11 +85,33 @@ services:
       ConnectionStrings__DefaultConnection: Server = basketDb;Port = 5432;Database = BasketDb;User Id=postgres;Password=postgres;Include Error Detail=true
       ConnectionStrings__Redis: distributedCache:6379
       GrpcSettings__DiscountUrl: http://discount.grpc:8080
+      MessageBroker__Host: amqp://ecommerce-mq:5672
+      MessageBroker__UserName: guest
+      MessageBroker__Password: guest
     depends_on:
       - basketDb
       - distributedCache
       - discount.grpc
+      - messageBroker
   
+  ordering.api:
+    image: ordering.api
+    build:
+      context: .
+      dockerfile: Ordering.Api/Dockerfile
+    ports:
+      - "6003:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: 8080
+      ConnectionStrings__DefaultConnection: Server = orderDb,1433;Database = OrderDb;User Id=sa;Password=Serhiy0808;Encrypt=True;TrustServerCertificate=true
+      MessageBroker__Host: amqp://ecommerce-mq:5672
+      MessageBroker__UserName: guest
+      MessageBroker__Password: guest
+    depends_on:
+      - orderDb
+      - messageBroker
+
   discount.grpc:
     image: discount.grpc
     build:
@@ -88,10 +122,11 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: 8080
-      ConnectionStrings__Database: Data Source= discountDb
+      ConnectionStrings__Database: Data Source = discountDb
       
 volumes:
   postgres_catalog:
   postgres_basket:
   redis_data:
 
+  

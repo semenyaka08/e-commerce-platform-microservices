@@ -104,7 +104,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: 8080
-      ConnectionStrings__DefaultConnection: Server = orderDb,1433;Database = OrderDb;User Id=sa;Password=Serhiy0808;Encrypt=True;TrustServerCertificate=true
+      ConnectionStrings__DefaultConnection: Server = orderDb;Database = OrderDb;User Id=sa;Password=Serhiy0808;Encrypt=True;TrustServerCertificate=true
       MessageBroker__Host: amqp://ecommerce-mq:5672
       MessageBroker__UserName: guest
       MessageBroker__Password: guest

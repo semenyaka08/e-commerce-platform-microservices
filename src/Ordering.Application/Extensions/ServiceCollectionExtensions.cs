@@ -1,8 +1,9 @@
 ﻿using System.Reflection;
 using BuildingBlocks.Behaviors;
-using BuildingBlocks.RabbitMQ.MassTransit;
+using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Ordering.Application.Orders.EventHandlers.Integration;
 
 namespace Ordering.Application.Extensions;
 
@@ -15,8 +16,23 @@ public static class ServiceCollectionExtensions
             config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             config.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
-
-        serviceCollection.AddMessageBroker(configuration, Assembly.GetExecutingAssembly());
+        
+        serviceCollection.AddMassTransit(config =>
+        {
+            config.SetKebabCaseEndpointNameFormatter();
+            
+            config.AddConsumer<BasketCheckoutEventHandler>();
+            
+            config.UsingRabbitMq((context, configurator) =>
+            {
+                configurator.Host(new Uri(configuration["MessageBroker:Host"]!), host =>
+                {
+                    host.Username(configuration["MessageBroker:UserName"]);
+                    host.Password(configuration["MessageBroker:Password"]);
+                });
+                configurator.ConfigureEndpoints(context);
+            });
+        });
         
         return serviceCollection;
     }

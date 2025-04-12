@@ -2,12 +2,12 @@ using Basket.Api.Data;
 using Basket.Api.Middlewares;
 using Basket.Api.Models;
 using BuildingBlocks.Behaviors;
-using BuildingBlocks.RabbitMQ.MassTransit;
 using Carter;
 using Discount.Grpc;
 using FluentValidation;
 using HealthChecks.UI.Client;
 using Marten;
+using MassTransit;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,7 +22,20 @@ builder.Services.AddMediatR(config =>
     config.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
 
-builder.Services.AddMessageBroker(builder.Configuration);
+builder.Services.AddMassTransit(config =>
+{
+    config.SetKebabCaseEndpointNameFormatter();
+
+    config.UsingRabbitMq((context, configurator) =>
+    {
+        configurator.Host(new Uri(builder.Configuration["MessageBroker:Host"]!), host =>
+        {
+            host.Username(builder.Configuration["MessageBroker:UserName"]);
+            host.Password(builder.Configuration["MessageBroker:Password"]);
+        });
+        configurator.ConfigureEndpoints(context);
+    });
+});
 
 builder.Services.AddMarten(opts =>
 {

@@ -12,7 +12,7 @@ public class OrderUpdatedEventHandler(ILogger<OrderUpdatedEventHandler> logger, 
     {
         logger.LogInformation("Domain Event handled: {DomainEvent}", domainEvent.GetType().Name);
 
-        var orderUpdatedEvent = domainEvent.Order.ToDto();
+        var orderUpdatedEvent = domainEvent.Order.ToUpdateEvent();
 
         await publishEndpoint.Publish(orderUpdatedEvent, cancellationToken);
     }

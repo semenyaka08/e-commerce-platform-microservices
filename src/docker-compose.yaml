@@ -36,6 +36,18 @@ services:
       - SA_PASSWORD=Serhiy0808
     ports:
       - "1433:1433"
+  
+  messageBroker:
+    image: rabbitmq:management
+    container_name: messageBroker
+    hostname: ecommerce-mq
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
     
   distributedCache:
     image: redis

@@ -12,7 +12,7 @@ public class OrderCreateEventHandler(ILogger<OrderCreateEventHandler> logger, IP
     {
         logger.LogInformation("Domain Event handled: {DomainEvent}", domainEvent.GetType().Name);
 
-        var orderCreatedEvent = domainEvent.Order.ToDto();
+        var orderCreatedEvent = domainEvent.Order.ToCreateEvent();
 
         await publishEndpoint.Publish(orderCreatedEvent, cancellationToken);
     }

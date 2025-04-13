@@ -40,7 +40,7 @@ public class CreateOrderCommandHandler(IOrderRepository orderRepository) : IComm
             command.Order.Payment.Cvv,
             command.Order.Payment.PaymentMethod);
 
-        var order = Order.Create(CustomerId.Of(Guid.NewGuid()),
+        var order = Order.Create(OrderId.Of(command.Order.Id), CustomerId.Of(command.Order.CustomerId),
             OrderName.Of(command.Order.OrderName),
             shippingAddress,
             billingAddress,

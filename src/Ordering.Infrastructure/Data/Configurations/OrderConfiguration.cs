@@ -18,7 +18,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 
         builder.HasOne<Customer>()
             .WithMany()
-            .HasForeignKey(z=>z.CustomerId)
+            .HasForeignKey(z => z.CustomerId)
             .IsRequired();
         
         builder.ComplexProperty(

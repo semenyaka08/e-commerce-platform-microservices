@@ -48,6 +48,11 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     
   distributedCache:
     image: redis
@@ -89,10 +94,14 @@ services:
       MessageBroker__UserName: guest
       MessageBroker__Password: guest
     depends_on:
-      - basketDb
-      - distributedCache
-      - discount.grpc
-      - messageBroker
+      basketDb:
+        condition: service_started
+      distributedCache:
+        condition: service_started
+      discount.grpc:
+        condition: service_started
+      messageBroker:
+        condition: service_healthy
   
   ordering.api:
     image: ordering.api
@@ -109,8 +118,10 @@ services:
       MessageBroker__UserName: guest
       MessageBroker__Password: guest
     depends_on:
-      - orderDb
-      - messageBroker
+      orderDb:
+        condition: service_started
+      messageBroker:
+        condition: service_healthy
 
   discount.grpc:
     image: discount.grpc

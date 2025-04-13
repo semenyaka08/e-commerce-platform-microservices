@@ -13,7 +13,7 @@ public class BasketCheckoutEventHandler(ILogger<BasketCheckoutEventHandler> logg
         logger.LogInformation("Handling basket checkout event with id: {Id}", context.Message.Id);
 
         var command = context.Message.ToCommand();
-
+        
         await sender.Send(command);
     }
 }

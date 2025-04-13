@@ -134,10 +134,27 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: 8080
       ConnectionStrings__Database: Data Source = discountDb
+    
+  yarpapigateway:
+    image: yarpapigateway
+    build:
+      context: .
+      dockerfile: YarpApiGateway/Dockerfile  
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: 8080
+    depends_on:
+      - catalog.api
+      - basket.api
+      - ordering.api
+    ports:
+      - "6004:8080"
       
 volumes:
   postgres_catalog:
   postgres_basket:
   redis_data:
+
+  
 
   

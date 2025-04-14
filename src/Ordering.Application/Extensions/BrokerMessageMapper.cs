@@ -26,6 +26,6 @@ public static class BrokerMessageMapper
 
     private static OrderItemDto ToDto(this CartItem item, Guid orderId)
     {
-        return new OrderItemDto(orderId, item.ProductId, item.Quantity, item.Price);
+        return new OrderItemDto(orderId, item.Quantity, item.Price);
     }
 }

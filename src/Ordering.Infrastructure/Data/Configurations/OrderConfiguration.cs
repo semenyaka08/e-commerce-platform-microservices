@@ -15,11 +15,10 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.Property(o => o.Id).HasConversion(
             orderId => orderId.Value,
             dbId => OrderId.Of(dbId));
-
-        builder.HasOne<Customer>()
-            .WithMany()
-            .HasForeignKey(z => z.CustomerId)
-            .IsRequired();
+        
+        builder.Property(o => o.CustomerId).HasConversion(
+            customerId => customerId.Value,
+            dbId => CustomerId.Of(dbId));
         
         builder.ComplexProperty(
             o => o.OrderName, nameBuilder =>

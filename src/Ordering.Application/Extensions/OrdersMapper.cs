@@ -97,13 +97,13 @@ public static class OrdersMapper
 
     private static OrderItemDto ToDto(this OrderItem orderItem)
     {
-        return new OrderItemDto(orderItem.OrderId.Value, orderItem.ProductId.Value, orderItem.Quantity,
+        return new OrderItemDto(orderItem.OrderId.Value, orderItem.Quantity,
             orderItem.Price);
     }
     
     private static EventOrderItem ToEventOrderItem(this OrderItem orderItem)
     {
-        return new EventOrderItem(orderItem.OrderId.Value, orderItem.ProductId.Value, orderItem.Quantity,
+        return new EventOrderItem(orderItem.OrderId.Value, orderItem.Quantity,
             orderItem.Price);
     }
 }

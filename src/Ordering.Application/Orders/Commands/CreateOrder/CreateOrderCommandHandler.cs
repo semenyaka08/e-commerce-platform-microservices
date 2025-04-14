@@ -49,7 +49,7 @@ public class CreateOrderCommandHandler(IOrderRepository orderRepository) : IComm
 
         foreach (var item in command.Order.OrderItems)
         {
-            order.Add(ProductId.Of(item.ProductId), item.Quantity, item.Price);
+            order.Add( item.Quantity, item.Price);
         }
 
         return order;

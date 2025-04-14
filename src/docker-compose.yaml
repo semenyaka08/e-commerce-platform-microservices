@@ -67,7 +67,7 @@ services:
     image: catalog.api
     build:
       context: .
-      dockerfile: Catalog.Api/Dockerfile
+      dockerfile: Catalog/Catalog.Api/Dockerfile
     ports:
       - "6000:8080"
     environment:
@@ -81,7 +81,7 @@ services:
     image: basket.api
     build:
       context: .
-      dockerfile: Basket.Api/Dockerfile
+      dockerfile: Basket/Basket.Api/Dockerfile
     ports:
       - "6001:8080"
     environment:
@@ -107,7 +107,7 @@ services:
     image: ordering.api
     build:
       context: .
-      dockerfile: Ordering.Api/Dockerfile
+      dockerfile: Ordering/Ordering.Api/Dockerfile
     ports:
       - "6003:8080"
     environment:
@@ -127,7 +127,7 @@ services:
     image: discount.grpc
     build:
       context: .
-      dockerfile: Discount.Grpc/Dockerfile
+      dockerfile: Discount/Discount.Grpc/Dockerfile
     ports:
       - "6002:8080"
     environment:
@@ -139,7 +139,7 @@ services:
     image: yarpapigateway
     build:
       context: .
-      dockerfile: YarpApiGateway/Dockerfile  
+      dockerfile: ApiGateways/YarpApiGateway/Dockerfile  
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: 8080
@@ -154,7 +154,3 @@ volumes:
   postgres_catalog:
   postgres_basket:
   redis_data:
-
-  
-
-  
